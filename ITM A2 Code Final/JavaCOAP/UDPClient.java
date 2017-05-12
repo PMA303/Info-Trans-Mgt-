@@ -1,0 +1,49 @@
+import java.io.*;
+import java.net.*;
+
+class UDPClient
+{
+	public static void main(String args[]) throws Exception
+	{
+		BufferedReader inFromUser = new BufferedReader(new InputStreamReader(System.in));
+		DatagramSocket clientSocket = new DatagramSocket();
+
+		InetAddress IPAddress = InetAddress.getByName("fd00::212:4b00:e07:cd1d");
+		
+/* 		// test.hello - GET (Original code, no longer works as resource no longer exists)
+		byte[] sendData = {(byte)0x40,(byte)0x01,(byte)0x8e,(byte)0x2c,(byte)0xb4,(byte)0x74,(byte)0x65,(byte)0x73,(byte)0x74,(byte)0x05,(byte)0x68,(byte)0x65,(byte)0x6c,(byte)0x6c,(byte)0x6f,(byte)0xc1, (byte)0x01};
+ */
+
+		
+		// Device/Manufacturer - GET (Works)
+//		byte[] sendData = {(byte)0x40,(byte)0x01,(byte)0x75,(byte)0x68,(byte)0xb6,(byte)0x44,(byte)0x65,(byte)0x76,(byte)0x69,(byte)0x63,(byte)0x65,(byte)0x0c,(byte)0x4d,(byte)0x61,(byte)0x6e,(byte)0x75,(byte)0x66,(byte)0x61,(byte)0x63,(byte)0x74,(byte)0x75,(byte)0x72,(byte)0x65,(byte)0x72,(byte)0xc1,(byte)0x02};
+		
+		// Temperature/Current - GET (Works)
+		byte[] sendData = {(byte)0x40,(byte)0x01,(byte)0x23,(byte)0x6c,(byte)0xbb,(byte)0x54,(byte)0x65,(byte)0x6d,(byte)0x70,(byte)0x65,(byte)0x72,(byte)0x61,(byte)0x74,(byte)0x75,(byte)0x72,(byte)0x65,(byte)0x07,(byte)0x43,(byte)0x75,(byte)0x72,(byte)0x72,(byte)0x65,(byte)0x6e,(byte)0x74,(byte)0xc1,(byte)0x02};
+		
+		// Temperature/Set Point - GET (Works)
+//		byte[] sendData = {(byte)0x40,(byte)0x01,(byte)0xd1,(byte)0xcd,(byte)0xbb,(byte)0x54,(byte)0x65,(byte)0x6d,(byte)0x70,(byte)0x65,(byte)0x72,(byte)0x61,(byte)0x74,(byte)0x75,(byte)0x72,(byte)0x65,(byte)0x09,(byte)0x53,(byte)0x65,(byte)0x74,(byte)0x20,(byte)0x50,(byte)0x6f,(byte)0x69,(byte)0x6e,(byte)0x74,(byte)0xc1,(byte)0x02};
+
+		// Temperature/Set Point - OBSERVE (Returns 'TooManyObservers')
+//		byte[] sendData = {(byte)0x42,(byte)0x01,(byte)0xd1,(byte)0xcf,(byte)0x35,(byte)0x4b,(byte)0x60,(byte)0x5b,(byte)0x54,(byte)0x65,(byte)0x6d,(byte)0x70,(byte)0x65,(byte)0x72,(byte)0x61,(byte)0x74,(byte)0x75,(byte)0x72,(byte)0x65,(byte)0x09,(byte)0x53,(byte)0x65,(byte)0x74,(byte)0x20,(byte)0x50,(byte)0x6f,(byte)0x69,(byte)0x6e,(byte)0x74,(byte)0xc1,(byte)0x02};
+
+
+		
+		byte[] receiveData = new byte[1024];
+		
+		
+		DatagramPacket sendPacket = new DatagramPacket(sendData, sendData.length, IPAddress, 5683);
+
+		clientSocket.send(sendPacket);
+
+		DatagramPacket receivePacket = new DatagramPacket(receiveData, receiveData.length);
+
+		clientSocket.receive(receivePacket);
+		String modifiedSentence = new String(receivePacket.getData());
+		System.out.println("FROM SERVER:" + modifiedSentence);
+		clientSocket.close();
+	}
+}
+
+
+
